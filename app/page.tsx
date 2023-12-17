@@ -138,8 +138,8 @@ export default function Home() {
 				<>
 					<p>Handouts:</p>
 					<p>
-						{playlists[moduleIndex].handouts?.map((handout: Handout) => (
-							<a target='_blank' href={handout.url}>
+						{playlists[moduleIndex].handouts?.map((handout: Handout, index) => (
+							<a target='_blank' href={handout.url} key={index}>
 								↓ &ldquo;{handout.name}&rdquo;
 							</a>
 						))}
