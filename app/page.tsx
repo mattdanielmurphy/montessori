@@ -1,8 +1,11 @@
-"use client"
-import Image from "next/image"
-import { useEffect, useState } from "react"
-import YouTube, { YouTubeProps } from "react-youtube"
-import { Handout, playlists } from "./playlists"
+'use client'
+
+import { Handout, playlists } from './playlists'
+import YouTube, { YouTubeProps } from 'react-youtube'
+import { getCookie, setCookie } from 'cookies-next'
+import { useEffect, useState } from 'react'
+
+import Image from 'next/image'
 
 interface IndiciesPlayedTo {
 	[index: number]: number
@@ -10,24 +13,29 @@ interface IndiciesPlayedTo {
 
 export default function Home() {
 	const [moduleIndex, setModuleIndex] = useState(0)
-	const [indiciesPlayedTo, setIndiciesPlayedTo] = useState<IndiciesPlayedTo>({ 0: 1 })
+	const [indiciesPlayedTo, setIndiciesPlayedTo] = useState<IndiciesPlayedTo>(
+		{},
+	)
 	const [videoIndex, setVideoIndex] = useState(0)
 	const [isLoading, setIsLoading] = useState(true)
-	const [moduleName, setModuleName] = useState(playlists[moduleIndex].name)
-	const accentColor = "red" // Youtube red (pretty sick that it's just pure red)
+	const [moduleName, setModuleName] = useState('')
+	const accentColor = 'red' // Youtube red (pretty sick that it's just pure red)
+
+
+	useEffect(() => {
+		const moduleIndex = Number(getCookie('moduleIndex')) || 0
+		setModuleIndex(moduleIndex)
+		setIndiciesPlayedTo(JSON.parse(
+			getCookie('indiciesPlayedTo') || '{}',
+		))
+		setModuleName(playlists[moduleIndex].name)
+	}, [])
 
 	useEffect(() => {
 		setIsLoading(true)
 		setModuleName(playlists[moduleIndex].name)
+		setCookie('moduleIndex', moduleIndex)
 	}, [moduleIndex])
-	useEffect(() => {
-		(async () => {
-			// const indiciesPlayedToFromStorage = await kv.get<IndiciesPlayedTo>('indiciesPlayedTo')
-			// if (indiciesPlayedToFromStorage)
-			// 	setIndiciesPlayedTo(indiciesPlayedToFromStorage)
-			// else await kv.set('indiciesPlayedTo', {0:2, 1:1})
-		})()
-	},[])
 
 	// const lastIndex = playlists.length - 1
 	const lastIndex = 7
@@ -35,35 +43,37 @@ export default function Home() {
 	function handlePrevButton() {
 		if (moduleIndex - 1 >= 0) setModuleIndex(moduleIndex - 1)
 	}
-	const onReady: YouTubeProps["onReady"] = (event) => {
+	const onReady: YouTubeProps['onReady'] = (event) => {
 		// access to player in all event handlers via event.target
-		console.log("ready!")
-		console.log("cueing with index:", indiciesPlayedTo[moduleIndex])
+		console.log('ready!')
+		console.log('cueing with index:', indiciesPlayedTo[moduleIndex])
 
 		const newVideoIndex = indiciesPlayedTo[moduleIndex] || 0
 		event.target.cuePlaylist(playlists[moduleIndex].id, newVideoIndex, 0)
 		setVideoIndex(newVideoIndex)
 		setIsLoading(false)
 	}
-	const onEnd: YouTubeProps["onEnd"] = (event) => {
+	const onEnd: YouTubeProps['onEnd'] = (event) => {
 		// fires when playlist ends
-		console.log("ENDED, marking as played")
+		console.log('ENDED, marking as played')
 		const newIndicies = indiciesPlayedTo
 		newIndicies[moduleIndex] = videoIndex
 		setIndiciesPlayedTo(newIndicies)
+		setCookie('indiciesPlayedTo', JSON.stringify(indiciesPlayedTo))
 		// go to next module
 		setModuleIndex(moduleIndex + 1)
 	}
-	const onPlay: YouTubeProps["onPlay"] = (event) => {
+	const onPlay: YouTubeProps['onPlay'] = (event) => {
 		// access to player in all event handlers via event.target
-		console.log("event.target", event.target)
+		console.log('event.target', event.target)
 		if (videoIndex) {
 			const newIndicies = indiciesPlayedTo
 			newIndicies[moduleIndex] = videoIndex
 			setIndiciesPlayedTo(newIndicies)
+			setCookie('indiciesPlayedTo', JSON.stringify(indiciesPlayedTo))
 		}
 		setVideoIndex(event.target.getPlaylistIndex())
-		console.log("next video ready")
+		console.log('next video ready')
 		setIsLoading(false)
 	}
 	return (
@@ -104,12 +114,12 @@ export default function Home() {
 				onReady={onReady}
 				opts={{
 					playerVars: {
-						listType: "playlist",
+						listType: 'playlist',
 						list: playlists[moduleIndex].id,
 					},
 				}}
 			/>
-			<div className='mt-10 text-center flex items-center space-x-10'>
+			<div className='mt-8 text-center flex items-center space-x-10'>
 				<button
 					disabled={moduleIndex - 1 < 0}
 					className='prev-button'
@@ -137,13 +147,12 @@ export default function Home() {
 					</h3>
 				</button>
 			</div>
-			{playlists[moduleIndex].workbookURL && (
-				<p>
-					<a target='_blank' href={playlists[moduleIndex].workbookURL}>
-						↓ Workbook
-					</a>
-				</p>
-			)}
+			<h3 className='my-2'>
+				Video {videoIndex + 1} &nbsp;&nbsp;&mdash;&nbsp;{' '}
+				<a target='_blank' href={playlists[moduleIndex].workbookURL}>
+					↓ Workbook
+				</a>
+			</h3>
 			{playlists[moduleIndex].handouts && (
 				<>
 					<p>Handouts:</p>
@@ -161,14 +170,14 @@ export default function Home() {
 					color: hsl(200, 100%, 50%);
 				}
 				h1 {
-					font-family: "Avenir", "Helvetica Neue", Helvetica, Arial, sans-serif;
+					font-family: 'Avenir', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 					font-size: 2.4rem;
 					padding: 1rem;
 					margin-bottom: 2rem;
 					border-radius: 0.5rem;
 				}
 				h2 {
-					font-family: "Avenir", "Helvetica Neue", Helvetica, Arial, sans-serif;
+					font-family: 'Avenir', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 					letter-spacing: 0.1rem;
 					text-transform: uppercase;
 					font-size: 1.8rem;
