@@ -41,7 +41,7 @@ export const playlists: Playlist[] = [
 	},
 	{
 		id: "PLGXNehBPAYVZonih5k4MuMtOGWh8FN018",
-		name: "",
+		name: "Positive Discipline",
 		workbookURL:
 			"https://mega.nz/file/FsNWUbKI#eZhk4bo9BEyzq8m57E38za_mIHNGvuE4-PjoaE3Rr0Y",
 		handouts: [
@@ -53,13 +53,13 @@ export const playlists: Playlist[] = [
 	}, // week 6
 	{
 		id: "PLGXNehBPAYVagjhehL5ATqYz0ulOzk528",
-		name: "",
+		name: "Movement",
 		workbookURL:
 			"https://mega.nz/file/N8NBxBwA#tRm9p2HGY2ScZnD-JK6Rs_0bFil8hWbvIJhZJVT5b8w",
 	}, // week 7
 	{
 		id: "PLGXNehBPAYVZgRgoLrTtKRFBHsAl1rIVl",
-		name: "",
+		name: "Practical Life Activities",
 		workbookURL:
 			"https://mega.nz/file/RgElQDAa#mWOkBVKX4EOIOZC3rQFnLUJ78GYLUNyUR2uNCZMummE",
 	}, // week 8
