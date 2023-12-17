@@ -4,13 +4,15 @@ import { useEffect, useState } from "react"
 import YouTube, { YouTubeProps } from "react-youtube"
 import { Handout, playlists } from "./playlists"
 
+interface IndiciesPlayedTo {
+	[index: number]: number
+}
+
 export default function Home() {
 	const [moduleIndex, setModuleIndex] = useState(0)
+	const [indiciesPlayedTo, setIndiciesPlayedTo] = useState<IndiciesPlayedTo>({ 0: 1 })
 	const [videoIndex, setVideoIndex] = useState(0)
 	const [isLoading, setIsLoading] = useState(true)
-	const [indiciesPlayedTo, setIndiciesPlayedTo] = useState<{
-		[index: number]: number
-	}>({ 0: 1 })
 	const [moduleName, setModuleName] = useState(playlists[moduleIndex].name)
 	const accentColor = "red" // Youtube red (pretty sick that it's just pure red)
 
@@ -18,6 +20,14 @@ export default function Home() {
 		setIsLoading(true)
 		setModuleName(playlists[moduleIndex].name)
 	}, [moduleIndex])
+	useEffect(() => {
+		(async () => {
+			// const indiciesPlayedToFromStorage = await kv.get<IndiciesPlayedTo>('indiciesPlayedTo')
+			// if (indiciesPlayedToFromStorage)
+			// 	setIndiciesPlayedTo(indiciesPlayedToFromStorage)
+			// else await kv.set('indiciesPlayedTo', {0:2, 1:1})
+		})()
+	},[])
 
 	// const lastIndex = playlists.length - 1
 	const lastIndex = 7
