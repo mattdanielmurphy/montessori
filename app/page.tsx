@@ -38,7 +38,7 @@ export default function Home() {
 	}, [moduleIndex])
 
 	// const lastIndex = playlists.length - 1
-	const lastIndex = 7
+	const lastIndex = 11
 
 	function handlePrevButton() {
 		if (moduleIndex - 1 >= 0) setModuleIndex(moduleIndex - 1)

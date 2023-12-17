@@ -74,25 +74,25 @@ export const playlists: Playlist[] = [
 			"https://mega.nz/file/RgElQDAa#mWOkBVKX4EOIOZC3rQFnLUJ78GYLUNyUR2uNCZMummE",
 	}, // week 8
 	{
-		id: "",
+		id: "PLGXNehBPAYVYa-scxnC-i0-EudojE86FI",
 		name: "Language Development",
 		workbookURL:
 			"https://mega.nz/file/Bp0jCZCA#r2UoS-pwn9e5rAbd3sc3d5Kdk7UHZPY8kazkmfgOqtY",
 	}, // week 9
 	{
-		id: "",
+		id: "PLGXNehBPAYVZV0EEjUH-3ucY3rKY7d5gJ",
 		name: "Sensorial Activities",
 		workbookURL:
 			"https://mega.nz/file/o0kn0Q6A#qnPqSJP08DgfRoeVO6qLdYvN8RRJuLE2CaRNygo20wQ",
 	}, // week 10
 	{
-		id: "",
+		id: "PLGXNehBPAYVb9aogJOD8hU0f_rs22hxDw",
 		name: "Covering Basic Needs",
 		workbookURL:
 			"https://mega.nz/file/FsFT3IRB#E8P2CKi6bad78w9mZIEiB6TzKFHFZ-bYptvRMC1fGSc",
 	}, // week 11
 	{
-		id: "",
+		id: "PLGXNehBPAYVaxYpCEYN8WT4B-teJF1Plh",
 		name: "Toilet Learning",
 		workbookURL:
 			"https://mega.nz/file/ttcGEKBb#2d1jEi7Gfi_7qkwlJfdC3toFFnoljPHDpJZzfWY23k0",
