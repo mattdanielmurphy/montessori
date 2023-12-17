@@ -38,6 +38,16 @@ export const playlists: Playlist[] = [
 		name: "Social-Emotional Development",
 		workbookURL:
 			"https://mega.nz/file/d01mEYzZ#7Q3Q4sBJD_Q21gVd2WrUi1wTUOPeIDF_KsvPlbsCRhw",
+			handouts: [
+				{
+					name: "Meltdowns Brain Relationship",
+					url: "https://mega.nz/file/U4Nh0K4R#dfsCxw2Hcuo8rR72aSI_vPM803GNPiu9HFaTO1XYU6w",
+				},
+				{
+					name: "Socioemotional Development Stages",
+					url: "https://mega.nz/file/Jt9m1RqA#OqGevOV1kG2mZIYqfCOBbLEdRUNBtwvETvguMLKRHYo",
+				},
+			],
 	},
 	{
 		id: "PLGXNehBPAYVZonih5k4MuMtOGWh8FN018",
