@@ -100,27 +100,32 @@ export default function Home() {
 				}}
 			/>
 			<div className='mt-10 text-center flex items-center space-x-10'>
-					<button disabled={moduleIndex - 1 < 0} className='prev-button' onClick={() => setModuleIndex(moduleIndex - 1)} >
-						<h3 className={`text-3xl`}>
-							<span className='inline-block transition-transform group-hover:scale-150 motion-reduce:transform-none'>
-								&lt;-
-							</span>
-						</h3>
-					</button>
+				<button
+					disabled={moduleIndex - 1 < 0}
+					className='prev-button'
+					onClick={() => setModuleIndex(moduleIndex - 1)}
+				>
+					<h3 className={`text-3xl`}>
+						<span className='inline-block transition-transform group-hover:scale-150 motion-reduce:transform-none'>
+							&lt;-
+						</span>
+					</h3>
+				</button>
 				<h2>
 					Module {moduleIndex + 1}
 					{moduleName && `: ${moduleName}`}
 				</h2>
-					<button disabled={moduleIndex + 1 > lastIndex} className='next-button'
-						onClick={() => setModuleIndex(moduleIndex + 1)}
-					>
-						<h3 className={`text-3xl`}>
-							<span className='inline-block transition-transform group-hover:scale-150 motion-reduce:transform-none'>
-								-&gt;
-							</span>
-						</h3>
-					</button>
-
+				<button
+					disabled={moduleIndex + 1 > lastIndex}
+					className='next-button'
+					onClick={() => setModuleIndex(moduleIndex + 1)}
+				>
+					<h3 className={`text-3xl`}>
+						<span className='inline-block transition-transform group-hover:scale-150 motion-reduce:transform-none'>
+							-&gt;
+						</span>
+					</h3>
+				</button>
 			</div>
 			{playlists[moduleIndex].workbookURL && (
 				<p>
@@ -135,7 +140,7 @@ export default function Home() {
 					<p>
 						{playlists[moduleIndex].handouts?.map((handout: Handout) => (
 							<a target='_blank' href={handout.url}>
-								↓ "{handout.name}"
+								↓ &ldquo;{handout.name}&rdquo;
 							</a>
 						))}
 					</p>
