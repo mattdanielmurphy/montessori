@@ -145,12 +145,14 @@ export default function Home() {
 					</h3>
 				</button>
 			</div>
+			{/* Workbook */}
 			<h3 className='my-2'>
 				Video {videoIndex + 1} &nbsp;&nbsp;&mdash;&nbsp;{' '}
 				<a target='_blank' href={playlists[moduleIndex].workbookURL}>
 					↓ Workbook
 				</a>
 			</h3>
+			{/* Handouts */}
 			{playlists[moduleIndex].handouts && (
 				<>
 					<p>Handouts:</p>
