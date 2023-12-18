@@ -91,7 +91,7 @@ const Home = () => {
 		)
 		// Adjust player width and height
 		event.target.g.width = width
-		event.target.g.height = 'auto'
+		event.target.g.height = width * 0.5625
 		console.log('setting player dimensions', { height: width * 0.5625, width })
 		setPlayerDimensions({
 			height: String(width * 0.5625),
@@ -187,57 +187,6 @@ const Home = () => {
 					))}
 				</>
 			)}
-
-			{/* CSS Styles for links and other elements */}
-			<style jsx>{`
-				// Link styles...
-				a {
-					color: white;
-					border-bottom: 2px solid white;
-				}
-				a:hover {
-					color: #00d4ff;
-					border-bottom: 2px solid #00d4ff;
-				}
-				h1 {
-					// Title styles...
-					font-family: 'Avenir', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-					font-size: 2.4rem;
-					padding: 1rem;
-					margin-bottom: 2rem;
-					border-radius: 0.5rem;
-				}
-				h2 {
-					// Module title styles...
-					font-family: 'Avenir', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-					letter-spacing: 0.1rem;
-					text-transform: uppercase;
-					margin-top: 0.4rem;
-				}
-				button:disabled {
-					// Disabled button styles...
-					color: transparent;
-				}
-				// YouTube player container styles...
-				.youtube-container div {
-					position: relative;
-					padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
-					height: 0;
-					overflow: hidden;
-					max-width: 100%;
-					background: #000;
-					margin: 1.5em auto;
-				}
-
-				.youtube-container div iframe {
-					position: absolute;
-					top: 0;
-					left: 0;
-					width: 100%;
-					height: 100%;
-					border: 0;
-				}
-			`}</style>
 		</main>
 	)
 }
