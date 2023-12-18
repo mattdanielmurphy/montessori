@@ -1,14 +1,13 @@
 'use client'
 
-// Import statements...
 import { Handout, playlists } from './playlists'
+import { SetStateAction, useEffect, useState } from 'react'
 import YouTube, { YouTubeProps } from 'react-youtube'
 import { getCookie, setCookie } from 'cookies-next'
-import { useEffect, useState } from 'react'
 
 import { Spinner } from './Spinner'
 
-interface IndiciesPlayedTo {
+interface IndiciesLeftOffOn {
 	[index: number]: number
 }
 
@@ -26,7 +25,9 @@ const Home = () => {
 		width: '393.75',
 	})
 	const [moduleIndex, setModuleIndex] = useState(0)
-	const [indiciesPlayedTo, setIndiciesPlayedTo] = useState<IndiciesPlayedTo>({})
+	const [indiciesLeftOffOn, setIndiciesLeftOffOn] = useState<IndiciesLeftOffOn>(
+		{},
+	)
 	const [videoIndex, setVideoIndex] = useState(0)
 	const [isLoading, setIsLoading] = useState(true)
 	const [moduleName, setModuleName] = useState('')
@@ -34,15 +35,33 @@ const Home = () => {
 	useEffect(() => {
 		const moduleIndex = Number(getCookie('moduleIndex')) || 4
 		setModuleIndex(moduleIndex)
-		setIndiciesPlayedTo(JSON.parse(getCookie('indiciesPlayedTo') || '{}'))
+		setIndiciesLeftOffOn(JSON.parse(getCookie('indiciesLeftOffOn') || '{}'))
 		setModuleName(playlists[moduleIndex].name)
 
 		// Listen for keyboard commands
 		console.log('lastIndex', lastIndex)
-		document.addEventListener('keydown', (e) => {
+		const listener = (e: KeyboardEvent) => {
 			if (e.altKey && e.key === 'ArrowRight') tryToIncrementModuleIndex()
 			if (e.altKey && e.key === 'ArrowLeft') tryToDecrementModuleIndex()
+		}
+
+		// setYoutubePlayerDimensions(setPlayerDimensions)
+		const { width, height } = getDimensionsBasedOnWindowSize()
+		const ytplayer = document.querySelector(
+			'.youtube-container iframe',
+		) as HTMLIFrameElement
+		if (ytplayer) {
+			ytplayer.width = String(width)
+			ytplayer.style.aspectRatio = '16 / 9'
+			ytplayer.height = 'auto'
+		}
+		setPlayerDimensions({
+			height: String(height),
+			width: String(width),
 		})
+
+		document.addEventListener('keydown', listener)
+		return () => document.removeEventListener('keydown', listener)
 	}, [])
 
 	useEffect(() => {
@@ -66,11 +85,12 @@ const Home = () => {
 	// Handle video player ready event... when the player is ready after switching to a new module
 	const handleReady: YouTubeProps['onReady'] = (event) => {
 		console.log('ready!')
-		const newVideoIndex = indiciesPlayedTo[moduleIndex] || 0
+		const newVideoIndex = indiciesLeftOffOn[moduleIndex] || 0
 		// Cue the playlist and update state
 
 		event.target.cuePlaylist(playlists[moduleIndex].id, newVideoIndex, 0)
 		setVideoIndex(newVideoIndex)
+
 		setIsLoading(false)
 	}
 
@@ -78,16 +98,15 @@ const Home = () => {
 	const handleEnd: YouTubeProps['onEnd'] = (event) => {
 		console.log('ENDED, marking as played')
 		// Update indicies and cookies, then move to the next module
-		updateIndiciesAndCookies()
 		tryToIncrementModuleIndex()
 	}
 
 	// Handle video player play event
 	const handlePlay: YouTubeProps['onPlay'] = (event) => {
 		// If video index exists, update indicies and cookies
-		if (videoIndex) {
-			updateIndiciesAndCookies()
-		}
+		// if (videoIndex) {
+		// 	updateIndiciesAndCookies()
+		// }
 		// Update video index and loading state
 		setVideoIndex(event.target.getPlaylistIndex())
 		setIsLoading(false)
@@ -95,33 +114,23 @@ const Home = () => {
 
 	// Handle video player state change event
 	const handleStateChange: YouTubeProps['onStateChange'] = (event) => {
-		const width = Math.min(
-			Math.max(window.innerWidth * MIN_WIDTH_PERCENTAGE, 400),
-			MAX_WIDTH,
-		)
-		// Adjust player width and height
-		event.target.g.width = width
-		event.target.g.height = width * 0.5625
-		console.log('setting player dimensions', { height: width * 0.5625, width })
-		setPlayerDimensions({
-			height: String(width * 0.5625),
-			width: String(width),
-		})
-		event.target.g.style.aspectRatio = '16 / 9'
+		setYoutubePlayerDimensions(event, setPlayerDimensions)
+		updateIndiciesAndCookies()
 	}
 
 	// Update indicies and cookies
 	const updateIndiciesAndCookies = () => {
-		const newIndicies = { ...indiciesPlayedTo }
+		const newIndicies = { ...indiciesLeftOffOn }
 		newIndicies[moduleIndex] = videoIndex
+		console.log('updating indicies and cookies', newIndicies)
 		// Update state and cookies
-		setIndiciesPlayedTo(newIndicies)
-		setCookie('indiciesPlayedTo', JSON.stringify(newIndicies))
+		setIndiciesLeftOffOn(newIndicies)
+		setCookie('indiciesLeftOffOn', JSON.stringify(newIndicies))
 	}
 
 	// Render component
 	return (
-		<main className='flex min-h-screen flex-col items-center justify-center py-12 lg-px-24'>
+		<main className='flex min-h-screen flex-col items-center justify-center lg-px-24'>
 			{/* Loading spinner */}
 			{isLoading && <Spinner accentColor={accentColor} />}
 
@@ -135,6 +144,7 @@ const Home = () => {
 					onEnd={handleEnd}
 					onPlay={handlePlay}
 					onReady={handleReady}
+					style={{ opacity: isLoading ? 0.5 : 1 }}
 					opts={{
 						...playerDimensions,
 						playerVars: {
@@ -149,7 +159,7 @@ const Home = () => {
 			<div className='mt-8 text-center flex items-center space-x-4 md:space-x-10 md:flex-row px-5'>
 				{/* Previous module button */}
 				<button
-					className='min-w-[2rem]'
+					className='min-w-[2rem] hover:text-[#00d4ff]'
 					disabled={moduleIndex - 1 < 0}
 					onClick={tryToDecrementModuleIndex}
 				>
@@ -166,7 +176,7 @@ const Home = () => {
 
 				{/* Next module button */}
 				<button
-					className='min-w-[2rem]'
+					className='min-w-[2rem] hover:text-[#00d4ff]'
 					disabled={moduleIndex + 1 > lastIndex}
 					onClick={tryToIncrementModuleIndex}
 				>
@@ -202,3 +212,27 @@ const Home = () => {
 }
 
 export default Home
+
+function setYoutubePlayerDimensions(
+	event: { data?: number; target: any },
+	setPlayerDimensions: {
+		(value: SetStateAction<{ height: string; width: string }>): void
+	},
+) {
+	const { width, height } = getDimensionsBasedOnWindowSize()
+	event.target.g.width = width
+	event.target.g.style.aspectRatio = '16 / 9'
+	event.target.g.height = 'auto'
+	setPlayerDimensions({
+		height: String(height),
+		width: String(width),
+	})
+}
+
+function getDimensionsBasedOnWindowSize() {
+	const width = Math.min(
+		Math.max(window.innerWidth * MIN_WIDTH_PERCENTAGE, 400),
+		MAX_WIDTH,
+	)
+	return { width, height: width * 0.5625 }
+}
