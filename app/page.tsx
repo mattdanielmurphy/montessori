@@ -119,19 +119,19 @@ export default function Home() {
 					}}
 				/>
 			</div>
-			<div className='mt-8 text-center flex items-center space-x-10 sm:flex-row'>
+			<div className='mt-8 text-center flex items-center space-x-4 md:space-x-10 md:flex-row'>
 				<button
 					disabled={moduleIndex - 1 < 0}
 					className='prev-button'
 					onClick={() => setModuleIndex(moduleIndex - 1)}
 				>
-					<h3 className={`text-3xl`}>
-						<span className='inline-block transition-transform group-hover:scale-150 motion-reduce:transform-none'>
+					<h3 className={`text-2xl md:text-3xl`}>
+						<span className='inline-block'>
 							&lt;-
 						</span>
 					</h3>
 				</button>
-				<h2>
+				<h2 className='text-2xl md:text-3xl'>
 					Module {moduleIndex + 1}
 					{moduleName && `: ${moduleName}`}
 				</h2>
@@ -140,8 +140,8 @@ export default function Home() {
 					className='next-button'
 					onClick={() => setModuleIndex(moduleIndex + 1)}
 				>
-					<h3 className={`text-3xl`}>
-						<span className='inline-block transition-transform group-hover:scale-150 motion-reduce:transform-none'>
+					<h3 className={`text-2xl md:text-3xl`}>
+						<span className='inline-block'>
 							-&gt;
 						</span>
 					</h3>
@@ -180,7 +180,6 @@ export default function Home() {
 					font-family: 'Avenir', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 					letter-spacing: 0.1rem;
 					text-transform: uppercase;
-					font-size: 1.8rem;
 					margin-top: 0.4rem;
 				}
 				button:disabled {
