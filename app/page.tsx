@@ -5,8 +5,6 @@ import YouTube, { YouTubeProps } from 'react-youtube'
 import { getCookie, setCookie } from 'cookies-next'
 import { useEffect, useState } from 'react'
 
-import Image from 'next/image'
-
 interface IndiciesPlayedTo {
 	[index: number]: number
 }
@@ -40,9 +38,6 @@ export default function Home() {
 	// const lastIndex = playlists.length - 1
 	const lastIndex = 11
 
-	function handlePrevButton() {
-		if (moduleIndex - 1 >= 0) setModuleIndex(moduleIndex - 1)
-	}
 	const onReady: YouTubeProps['onReady'] = (event) => {
 		// access to player in all event handlers via event.target
 		console.log('ready!')
@@ -77,7 +72,7 @@ export default function Home() {
 		setIsLoading(false)
 	}
 	return (
-		<main className='flex min-h-screen flex-col items-center justify-center py-12 px-24'>
+		<main className='flex min-h-screen flex-col items-center justify-center py-12 lg-px-24'>
 			{isLoading && (
 				<div className='spinner'>
 					<div />
@@ -107,19 +102,24 @@ export default function Home() {
 					}
 				}
 			`}</style>
+
 			<h1>Montessori Beginnings</h1>
-			<YouTube
-				onEnd={onEnd} // defaults -> noop
-				onPlay={onPlay} // defaults -> noop
-				onReady={onReady}
-				opts={{
-					playerVars: {
-						listType: 'playlist',
-						list: playlists[moduleIndex].id,
-					},
-				}}
-			/>
-			<div className='mt-8 text-center flex items-center space-x-10'>
+
+			<div className="youtube-container">
+				<YouTube
+					onStateChange={(event) => {event.target.g.width = Math.min(Math.max(window.innerWidth*.8, 400), 1280), event.target.g.height = 'auto', event.target.g.style.aspectRatio = '16 / 9'}}
+					onEnd={onEnd} // defaults -> noop
+					onPlay={onPlay} // defaults -> noop
+					onReady={onReady}
+					opts={{
+						playerVars: {
+							listType: 'playlist',
+							list: playlists[moduleIndex].id,
+						},
+					}}
+				/>
+			</div>
+			<div className='mt-8 text-center flex items-center space-x-10 sm:flex-row'>
 				<button
 					disabled={moduleIndex - 1 < 0}
 					className='prev-button'
@@ -185,6 +185,24 @@ export default function Home() {
 				}
 				button:disabled {
 					color: black;
+				}
+				.youtube-container div {
+					position: relative;
+					padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+					height: 0;
+					overflow: hidden;
+					max-width: 100%;
+					background: #000;
+					margin: 1.5em auto;
+				}
+				
+				.youtube-container div iframe {
+					position: absolute;
+					top: 0;
+					left: 0;
+					width: 100%;
+					height: 100%;
+					border: 0;
 				}
 			`}</style>
 		</main>
