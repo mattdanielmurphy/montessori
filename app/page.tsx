@@ -60,6 +60,34 @@ const Home = () => {
 			width: String(width),
 		})
 
+		// disable hover for touch devices
+		function watchForHover() {
+			// lastTouchTime is used for ignoring emulated mousemove events
+			let lastTouchTime = 0
+
+			function enableHover() {
+				const date = new Date().getTime()
+				if (date - lastTouchTime < 500) return
+				document.body.classList.add('hasHover')
+			}
+
+			function disableHover() {
+				document.body.classList.remove('hasHover')
+			}
+
+			function updateLastTouchTime() {
+				lastTouchTime = new Date().getTime()
+			}
+
+			document.addEventListener('touchstart', updateLastTouchTime, true)
+			document.addEventListener('touchstart', disableHover, true)
+			document.addEventListener('mousemove', enableHover, true)
+
+			enableHover()
+		}
+
+		watchForHover()
+
 		document.addEventListener('keydown', listener)
 		return () => document.removeEventListener('keydown', listener)
 	}, [])
@@ -130,7 +158,7 @@ const Home = () => {
 
 	// Render component
 	return (
-		<main className='flex min-h-screen flex-col items-center justify-center lg-px-24'>
+		<main className='flex min-h-[90vh] flex-col items-center justify-center lg-px-24'>
 			{/* Loading spinner */}
 			{isLoading && <Spinner accentColor={accentColor} />}
 
@@ -159,7 +187,7 @@ const Home = () => {
 			<div className='mt-8 text-center flex items-center space-x-4 md:space-x-10 md:flex-row px-5'>
 				{/* Previous module button */}
 				<button
-					className='min-w-[2rem] hover:text-[#00d4ff]'
+					className='min-w-[2rem]'
 					disabled={moduleIndex - 1 < 0}
 					onClick={tryToDecrementModuleIndex}
 				>
@@ -176,7 +204,7 @@ const Home = () => {
 
 				{/* Next module button */}
 				<button
-					className='min-w-[2rem] hover:text-[#00d4ff]'
+					className='min-w-[2rem]'
 					disabled={moduleIndex + 1 > lastIndex}
 					onClick={tryToIncrementModuleIndex}
 				>

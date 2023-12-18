@@ -28,10 +28,15 @@ a {
   border-bottom: 2px solid white;
 }
 
-a:hover {
+body.hasHover a:hover {
   color: #00d4ff;
   border-bottom: 2px solid #00d4ff;
 }
+
+body.hasHover button:hover {
+  color: #00d4ff;
+}
+
 
 h1 {
   font-family: 'Avenir', 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -48,8 +53,9 @@ h2 {
   margin-top: 0.4rem;
 }
 
-button:disabled {
 
+
+button:disabled {
   color: transparent;
 }
 
