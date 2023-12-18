@@ -40,10 +40,8 @@ const Home = () => {
 		// Listen for keyboard commands
 		console.log('lastIndex', lastIndex)
 		document.addEventListener('keydown', (e) => {
-			if (e.altKey && e.key === 'ArrowRight' && moduleIndex + 1 <= lastIndex)
-				setModuleIndex((moduleIndex) => moduleIndex + 1)
-			if (e.altKey && e.key === 'ArrowLeft' && moduleIndex - 1 >= 0)
-				setModuleIndex((moduleIndex) => moduleIndex - 1)
+			if (e.altKey && e.key === 'ArrowRight') tryToIncrementModuleIndex()
+			if (e.altKey && e.key === 'ArrowLeft') tryToDecrementModuleIndex()
 		})
 	}, [])
 
@@ -52,6 +50,18 @@ const Home = () => {
 		setModuleName(playlists[moduleIndex].name)
 		setCookie('moduleIndex', moduleIndex)
 	}, [moduleIndex])
+
+	const tryToIncrementModuleIndex = () => {
+		setModuleIndex((moduleIndex) => {
+			return moduleIndex + 1 <= lastIndex ? moduleIndex + 1 : moduleIndex
+		})
+	}
+
+	const tryToDecrementModuleIndex = () => {
+		setModuleIndex((moduleIndex) => {
+			return moduleIndex - 1 >= 0 ? moduleIndex - 1 : moduleIndex
+		})
+	}
 
 	// Handle video player ready event... when the player is ready after switching to a new module
 	const handleReady: YouTubeProps['onReady'] = (event) => {
@@ -69,7 +79,7 @@ const Home = () => {
 		console.log('ENDED, marking as played')
 		// Update indicies and cookies, then move to the next module
 		updateIndiciesAndCookies()
-		setModuleIndex(moduleIndex + 1)
+		tryToIncrementModuleIndex()
 	}
 
 	// Handle video player play event
@@ -141,7 +151,7 @@ const Home = () => {
 				<button
 					className='min-w-[2rem]'
 					disabled={moduleIndex - 1 < 0}
-					onClick={() => setModuleIndex(moduleIndex - 1)}
+					onClick={tryToDecrementModuleIndex}
 				>
 					<h3 className={`text-xl md:text-3xl`}>
 						<span className='inline-block'>&lt;-</span>
@@ -158,7 +168,7 @@ const Home = () => {
 				<button
 					className='min-w-[2rem]'
 					disabled={moduleIndex + 1 > lastIndex}
-					onClick={() => setModuleIndex(moduleIndex + 1)}
+					onClick={tryToIncrementModuleIndex}
 				>
 					<h3 className={`text-xl md:text-3xl`}>
 						<span className='inline-block'>-&gt;</span>

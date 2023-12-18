@@ -10,8 +10,8 @@ export const Spinner = ({ accentColor }: { accentColor: any }) => (
 				--height: 40px;
 				width: 40px;
 				height: var(--height);
-				margin-top: 15px;
 				position: absolute;
+				top: calc(50vh - 30px);
 				border: 0.5px solid rgba(255, 255, 255, 0.2);
 				border-radius: 50%;
 				border-top: 4px solid ${accentColor};
