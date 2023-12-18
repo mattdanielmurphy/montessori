@@ -121,26 +121,26 @@ export default function Home() {
 			</div>
 			<div className='mt-8 text-center flex items-center space-x-4 md:space-x-10 md:flex-row'>
 				<button
+				className='min-w-[2rem]'
 					disabled={moduleIndex - 1 < 0}
-					className='prev-button'
 					onClick={() => setModuleIndex(moduleIndex - 1)}
 				>
-					<h3 className={`text-2xl md:text-3xl`}>
+					<h3 className={`text-xl md:text-3xl`}>
 						<span className='inline-block'>
 							&lt;-
 						</span>
 					</h3>
 				</button>
-				<h2 className='text-2xl md:text-3xl'>
+				<h2 className='text-xl md:text-3xl'>
 					Module {moduleIndex + 1}
 					{moduleName && `: ${moduleName}`}
 				</h2>
 				<button
+				className='min-w-[2rem]'
 					disabled={moduleIndex + 1 > lastIndex}
-					className='next-button'
 					onClick={() => setModuleIndex(moduleIndex + 1)}
 				>
-					<h3 className={`text-2xl md:text-3xl`}>
+					<h3 className={`text-xl md:text-3xl`}>
 						<span className='inline-block'>
 							-&gt;
 						</span>
