@@ -11,21 +11,16 @@ interface IndiciesPlayedTo {
 
 export default function Home() {
 	const [moduleIndex, setModuleIndex] = useState(0)
-	const [indiciesPlayedTo, setIndiciesPlayedTo] = useState<IndiciesPlayedTo>(
-		{},
-	)
+	const [indiciesPlayedTo, setIndiciesPlayedTo] = useState<IndiciesPlayedTo>({})
 	const [videoIndex, setVideoIndex] = useState(0)
 	const [isLoading, setIsLoading] = useState(true)
 	const [moduleName, setModuleName] = useState('')
 	const accentColor = 'red' // Youtube red (pretty sick that it's just pure red)
 
-
 	useEffect(() => {
 		const moduleIndex = Number(getCookie('moduleIndex')) || 0
 		setModuleIndex(moduleIndex)
-		setIndiciesPlayedTo(JSON.parse(
-			getCookie('indiciesPlayedTo') || '{}',
-		))
+		setIndiciesPlayedTo(JSON.parse(getCookie('indiciesPlayedTo') || '{}'))
 		setModuleName(playlists[moduleIndex].name)
 	}, [])
 
@@ -105,9 +100,16 @@ export default function Home() {
 
 			<h1>Montessori Beginnings</h1>
 
-			<div className="youtube-container">
+			<div className='youtube-container'>
 				<YouTube
-					onStateChange={(event) => {event.target.g.width = Math.min(Math.max(window.innerWidth*.8, 400), 1280), event.target.g.height = 'auto', event.target.g.style.aspectRatio = '16 / 9'}}
+					onStateChange={(event) => {
+						;(event.target.g.width = Math.min(
+							Math.max(window.innerWidth * 0.8, 400),
+							1280,
+						)),
+							(event.target.g.height = 'auto'),
+							(event.target.g.style.aspectRatio = '16 / 9')
+					}}
 					onEnd={onEnd} // defaults -> noop
 					onPlay={onPlay} // defaults -> noop
 					onReady={onReady}
@@ -119,31 +121,27 @@ export default function Home() {
 					}}
 				/>
 			</div>
-			<div className='mt-8 text-center flex items-center space-x-4 md:space-x-10 md:flex-row'>
+			<div className='mt-8 text-center flex items-center space-x-4 md:space-x-10 md:flex-row px-5'>
 				<button
-				className='min-w-[2rem]'
+					className='min-w-[2rem]'
 					disabled={moduleIndex - 1 < 0}
 					onClick={() => setModuleIndex(moduleIndex - 1)}
 				>
 					<h3 className={`text-xl md:text-3xl`}>
-						<span className='inline-block'>
-							&lt;-
-						</span>
+						<span className='inline-block'>&lt;-</span>
 					</h3>
 				</button>
-				<h2 className='text-xl md:text-3xl'>
+				<h2 className='text-xl max-w-[80%] md:text-3xl'>
 					Module {moduleIndex + 1}
 					{moduleName && `: ${moduleName}`}
 				</h2>
 				<button
-				className='min-w-[2rem]'
+					className='min-w-[2rem]'
 					disabled={moduleIndex + 1 > lastIndex}
 					onClick={() => setModuleIndex(moduleIndex + 1)}
 				>
 					<h3 className={`text-xl md:text-3xl`}>
-						<span className='inline-block'>
-							-&gt;
-						</span>
+						<span className='inline-block'>-&gt;</span>
 					</h3>
 				</button>
 			</div>
@@ -156,13 +154,13 @@ export default function Home() {
 			{playlists[moduleIndex].handouts && (
 				<>
 					<p>Handouts:</p>
-					<p>
-						{playlists[moduleIndex].handouts?.map((handout: Handout, index) => (
+					{playlists[moduleIndex].handouts?.map((handout: Handout, index) => (
+						<p>
 							<a target='_blank' href={handout.url} key={index}>
 								↓ &ldquo;{handout.name}&rdquo;
 							</a>
-						))}
-					</p>
+						</p>
+					))}
 				</>
 			)}
 			<style jsx>{`
@@ -194,7 +192,7 @@ export default function Home() {
 					background: #000;
 					margin: 1.5em auto;
 				}
-				
+
 				.youtube-container div iframe {
 					position: absolute;
 					top: 0;
