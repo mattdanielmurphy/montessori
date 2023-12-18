@@ -11,7 +11,7 @@ export const Spinner = ({ accentColor }: { accentColor: any }) => (
 				width: 40px;
 				height: var(--height);
 				position: absolute;
-				top: calc(50vh - 30px);
+				top: calc(50vh - 50px);
 				border: 0.5px solid rgba(255, 255, 255, 0.2);
 				border-radius: 50%;
 				border-top: 4px solid ${accentColor};
